@@ -1,6 +1,10 @@
 package main
 
-import "fmt"
+import (
+	"fmt"
+	"log"
+	"net/http"
+)
 
 const (
 	a = 2 << iota
@@ -10,6 +14,18 @@ const (
 )
 
 func main() {
-	fmt.Println("hello btc")
-	fmt.Println(b)
+	//http.HandleFunc("/foo", fooHandler)
+
+	http.HandleFunc("/bar", func(w http.ResponseWriter, r *http.Request) {
+		_, err := fmt.Fprintf(w,r.Method)
+		if err != nil {
+			return
+		}
+	})
+
+	log.Fatal(http.ListenAndServe(":8080", nil))
+}
+
+func fooHandler(w http.ResponseWriter, r *http.Request) string {
+	return "hello"
 }
