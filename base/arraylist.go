@@ -1,4 +1,4 @@
-package go_syntax_train
+package base
 
 import "fmt"
 
