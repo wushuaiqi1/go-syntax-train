@@ -31,3 +31,9 @@ func TestAppend(t *testing.T) {
 	fmt.Println(len(splice))
 	fmt.Println(cap(splice))
 }
+
+func TestInit(t *testing.T) {
+	stack := make([]int, 0)
+	stack = append(stack, 1, 3, 4, 4)
+	fmt.Println(stack)
+}
