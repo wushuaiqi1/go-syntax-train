@@ -1,47 +1,50 @@
 package web
 
-import "net/http"
+import (
+	"net/http"
+)
 
-type Server interface {
-	Route(method string, pattern string, handleFunc func(ctx *Context))
-	Run(address string) error
+type Handler interface {
+	Register(method string, pattern string, handle func(ctx *Context))
+	Start(address string)
+	http.Handler
 }
 
 type HttpServer struct {
-	name    string
-	handler Handler
+	name string
+	RequestHandler
+	RouteHandler
+	RunHandler
 }
 
-func NewHttpServer(name string) Server {
-	server := new(HttpServer)
-	server.name = name
-	server.handler = NewRouterHandlerMap()
-	return server
+func NewHttpServer(name string) Handler {
+	return &HttpServer{
+		name:           name,
+		RequestHandler: NewRequestHandler(),
+		RouteHandler:   NewRouteHandlerMap(),
+		RunHandler:     NewRunHandler(),
+	}
 }
 
-func (h *HttpServer) Route(method string, pattern string, handleFunc func(ctx *Context)) {
-	h.handler.RegisterRoute(method, pattern, handleFunc)
+// Register 注册动作
+func (server *HttpServer) Register(method string, pattern string, handle func(ctx *Context)) {
+	server.RegisterRoute(method, pattern, handle)
 }
 
-func (h *HttpServer) Run(address string) error {
-	http.Handle("/", h.handler)
-	return http.ListenAndServe(address, nil)
+// ServeHTTP 实现原生http.Handler接口
+func (server *HttpServer) ServeHTTP(w http.ResponseWriter, r *http.Request) {
+	ctx := NewContext(w, r)
+	funcByRoute := server.GetFuncByRoute(r.Method, r.URL.Path)
+	if funcByRoute == nil {
+		ctx.OfFail("404")
+		return
+	}
+	// 执行业务方法
+	funcByRoute(ctx)
 }
 
-// BuildHandler 构建请求上下文处理
-func buildHandler(method string, pattern string, handleFunc func(ctx *Context)) {
-	// TODO 为什么外部变量method数据状态可以维护，闭包特性可以维护上下文访问的数据，直到闭包销毁
-	http.HandleFunc(pattern, func(writer http.ResponseWriter, request *http.Request) {
-		// 创建调用上下文
-		ctx := NewContext(writer, request)
-		if request.Method != method {
-			err := ctx.OfFail("Method not Allowed")
-			if err != nil {
-				return
-			}
-			return
-		}
-		// 触发外部传递进来的匿名函数，即业务方法
-		handleFunc(ctx)
-	})
+// Start 启动动作
+func (server *HttpServer) Start(address string) {
+	server.Bind(server)
+	server.Run(address)
 }

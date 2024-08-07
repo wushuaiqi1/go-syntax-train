@@ -1,4 +1,4 @@
-package web
+package base
 
 import (
 	"fmt"
@@ -6,6 +6,8 @@ import (
 	"log"
 	"net/http"
 )
+
+// 原生方式
 
 func Init() {
 	http.HandleFunc("/hello", Hello)
@@ -16,7 +18,7 @@ func Init() {
 	}
 }
 
-// Hello TODO body是流式传递仅可读一次 第二次读不到不会报错
+// Hello body是流式传递仅可读一次 第二次读不到不会报错
 func Hello(w http.ResponseWriter, r *http.Request) {
 	log.Println("hello execute...")
 	data := r.Body
