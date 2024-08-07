@@ -8,20 +8,19 @@ type Server interface {
 }
 
 type HttpServer struct {
-	Name string
+	name         string
+	routeHandler *RouteHandler
 }
 
 func NewHttpServer(name string) Server {
 	server := new(HttpServer)
-	server.Name = name
+	server.name = name
+	server.routeHandler = NewRouterHandler()
 	return server
 }
 
 func (h *HttpServer) Route(method string, pattern string, handleFunc func(ctx *Context)) {
-	routerHandler := NewRouterHandler()
-	routerHandler.AddRoute(method, pattern, handleFunc)
-	http.Handle("/", routerHandler)
-	//buildHandler(method, pattern, handleFunc)
+	h.routeHandler.AddRoute(method, pattern, handleFunc)
 }
 
 // BuildHandler 构建请求上下文处理
@@ -31,7 +30,7 @@ func buildHandler(method string, pattern string, handleFunc func(ctx *Context)) 
 		// 创建调用上下文
 		ctx := NewContext(writer, request)
 		if request.Method != method {
-			err := ctx.ofFail("Method not Allowed")
+			err := ctx.OfFail("Method not Allowed")
 			if err != nil {
 				return
 			}
@@ -43,6 +42,7 @@ func buildHandler(method string, pattern string, handleFunc func(ctx *Context)) 
 }
 
 func (h *HttpServer) Run(address string) error {
+	http.Handle("/", h.routeHandler)
 	return http.ListenAndServe(address, nil)
 }
 

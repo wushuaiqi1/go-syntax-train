@@ -44,10 +44,10 @@ func (c *Context) WriteJson(code int, resp interface{}) error {
 	return nil
 }
 
-func (c *Context) ofSuccess(resp interface{}) error {
+func (c *Context) OfSuccess(resp interface{}) error {
 	return c.WriteJson(http.StatusOK, resp)
 }
 
-func (c *Context) ofFail(resp interface{}) error {
+func (c *Context) OfFail(resp interface{}) error {
 	return c.WriteJson(http.StatusBadRequest, resp)
 }
