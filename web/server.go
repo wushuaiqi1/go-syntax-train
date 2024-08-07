@@ -8,19 +8,24 @@ type Server interface {
 }
 
 type HttpServer struct {
-	name         string
-	routeHandler *RouteHandler
+	name    string
+	handler Handler
 }
 
 func NewHttpServer(name string) Server {
 	server := new(HttpServer)
 	server.name = name
-	server.routeHandler = NewRouterHandler()
+	server.handler = NewRouterHandlerMap()
 	return server
 }
 
 func (h *HttpServer) Route(method string, pattern string, handleFunc func(ctx *Context)) {
-	h.routeHandler.AddRoute(method, pattern, handleFunc)
+	h.handler.RegisterRoute(method, pattern, handleFunc)
+}
+
+func (h *HttpServer) Run(address string) error {
+	http.Handle("/", h.handler)
+	return http.ListenAndServe(address, nil)
 }
 
 // BuildHandler 构建请求上下文处理
@@ -40,10 +45,3 @@ func buildHandler(method string, pattern string, handleFunc func(ctx *Context)) 
 		handleFunc(ctx)
 	})
 }
-
-func (h *HttpServer) Run(address string) error {
-	http.Handle("/", h.routeHandler)
-	return http.ListenAndServe(address, nil)
-}
-
-type Header map[string][]string

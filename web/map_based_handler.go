@@ -5,19 +5,27 @@ import (
 	"net/http"
 )
 
-// RouteHandler 路由解析器
-type RouteHandler struct {
+type Handler interface {
+	http.Handler
+	RouteHandler
+}
+
+type RouteHandler interface {
+	RegisterRoute(method string, pattern string, handleFunc func(ctx *Context))
+}
+
+type RouteHandlerMap struct {
 	routes map[string]func(ctx *Context)
 }
 
-func NewRouterHandler() *RouteHandler {
-	return &RouteHandler{
-		make(map[string]func(ctx *Context)),
+func NewRouterHandlerMap() *RouteHandlerMap {
+	return &RouteHandlerMap{
+		routes: make(map[string]func(ctx *Context), 4),
 	}
 }
 
 // HandleHttp 解析http请求
-func (h *RouteHandler) ServeHTTP(w http.ResponseWriter, r *http.Request) {
+func (h *RouteHandlerMap) ServeHTTP(w http.ResponseWriter, r *http.Request) {
 	uri := h.getUri(r.Method, r.URL.Path)
 	handle, ok := h.routes[uri]
 	if !ok {
@@ -31,8 +39,7 @@ func (h *RouteHandler) ServeHTTP(w http.ResponseWriter, r *http.Request) {
 	handle(ctx)
 }
 
-// AddRoute 添加路由
-func (h *RouteHandler) AddRoute(method string, pattern string, handle func(ctx *Context)) {
+func (h *RouteHandlerMap) RegisterRoute(method string, pattern string, handle func(ctx *Context)) {
 	uri := h.getUri(method, pattern)
 	_, ok := h.routes[uri]
 	if ok {
@@ -41,6 +48,6 @@ func (h *RouteHandler) AddRoute(method string, pattern string, handle func(ctx *
 	h.routes[uri] = handle
 }
 
-func (h *RouteHandler) getUri(method string, pattern string) (res string) {
+func (h *RouteHandlerMap) getUri(method string, pattern string) (res string) {
 	return method + "#" + pattern
 }
