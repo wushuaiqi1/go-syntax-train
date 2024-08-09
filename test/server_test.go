@@ -8,7 +8,7 @@ import (
 
 func Test(t *testing.T) {
 	server := v2.NewHttpServer("test-server")
-	server.Register(http.MethodGet, "/home/user", Home)
+	server.Register(http.MethodGet, "/home/user/", Home)
 	server.Register(http.MethodPost, "/hi", Hi)
 	server.Register(http.MethodGet, "/home/hi", Hi)
 	server.Start(":8080")

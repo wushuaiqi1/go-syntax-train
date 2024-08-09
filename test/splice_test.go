@@ -2,6 +2,7 @@ package test
 
 import (
 	"fmt"
+	"go-syntax-train/algo"
 	"reflect"
 	"testing"
 )
@@ -36,4 +37,49 @@ func TestInit(t *testing.T) {
 	stack := make([]int, 0)
 	stack = append(stack, 1, 3, 4, 4)
 	fmt.Println(stack)
+}
+
+func TestCommon(t *testing.T) {
+	// 共享切片
+	data := make([]int, 0)
+	fmt.Printf("%p\n", data)
+	test1(data)
+	fmt.Println(data)
+}
+func test1(data []int) {
+	// 新地址
+	data = append(data, 1)
+	fmt.Printf("%p\n", data)
+	fmt.Println(data)
+}
+
+func TestGetPathList(t *testing.T) {
+	tree := &algo.TreeNode{
+		Val: 0,
+		Left: &algo.TreeNode{
+			Val: 0,
+			Left: &algo.TreeNode{
+				Val: 1,
+			},
+			Right: &algo.TreeNode{
+				Val: 0,
+			},
+		},
+		Right: &algo.TreeNode{
+			Val: 1,
+			Left: &algo.TreeNode{
+				Val: 1,
+			},
+			Right: &algo.TreeNode{
+				Val: 1,
+				Left: &algo.TreeNode{
+					Val: 0,
+				},
+				Right: &algo.TreeNode{
+					Val: 1,
+				},
+			},
+		},
+	}
+	algo.GetPathList(tree, make([]int, 0))
 }

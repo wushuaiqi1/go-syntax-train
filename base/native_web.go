@@ -7,8 +7,7 @@ import (
 	"net/http"
 )
 
-// 原生方式
-
+// Init 原生方式
 func Init() {
 	http.HandleFunc("/hello", Hello)
 	http.HandleFunc("/hi", Hi)
