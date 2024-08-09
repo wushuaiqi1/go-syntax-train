@@ -1,6 +1,9 @@
 package utils
 
-import "strings"
+import (
+	"fmt"
+	"strings"
+)
 
 func GetUri(method string, pattern string) (res string) {
 	return method + "#" + pattern
@@ -24,4 +27,8 @@ func BinarySum(numbers []int) (count int) {
 		tmp *= 2
 	}
 	return count
+}
+
+func ShowMemoryAddress(data any) {
+	fmt.Printf("%p\n", data)
 }

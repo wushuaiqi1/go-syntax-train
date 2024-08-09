@@ -1,6 +1,7 @@
-package algo
+package tree
 
 import (
+	"fmt"
 	"go-syntax-train/utils"
 )
 
@@ -53,6 +54,13 @@ func sumRootToLeaf(root *TreeNode) int {
 
 var list [][]int = make([][]int, 0)
 
+func List() {
+	for _, val := range list {
+		fmt.Println(val)
+	}
+}
+
+// GetPathList 获取二叉树所有路径
 func GetPathList(root *TreeNode, data []int) {
 	// 当前元素添加到切片
 	data = append(data, root.Val)
@@ -61,7 +69,8 @@ func GetPathList(root *TreeNode, data []int) {
 		// 切片底层共享数据
 		path := make([]int, len(data))
 		copy(path, data)
-		list = append(list, path)
+		fmt.Printf("%p\n", data)
+		list = append(list, data)
 		return
 	}
 	if root.Left != nil {

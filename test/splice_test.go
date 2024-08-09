@@ -2,7 +2,8 @@ package test
 
 import (
 	"fmt"
-	"go-syntax-train/algo"
+	"go-syntax-train/algo/tree"
+	"go-syntax-train/utils"
 	"reflect"
 	"testing"
 )
@@ -54,32 +55,34 @@ func test1(data []int) {
 }
 
 func TestGetPathList(t *testing.T) {
-	tree := &algo.TreeNode{
+	root := &tree.TreeNode{
 		Val: 0,
-		Left: &algo.TreeNode{
+		Left: &tree.TreeNode{
 			Val: 0,
-			Left: &algo.TreeNode{
-				Val: 1,
-			},
-			Right: &algo.TreeNode{
+			Right: &tree.TreeNode{
 				Val: 0,
-			},
-		},
-		Right: &algo.TreeNode{
-			Val: 1,
-			Left: &algo.TreeNode{
-				Val: 1,
-			},
-			Right: &algo.TreeNode{
-				Val: 1,
-				Left: &algo.TreeNode{
+				Left: &tree.TreeNode{
 					Val: 0,
 				},
-				Right: &algo.TreeNode{
+				Right: &tree.TreeNode{
 					Val: 1,
 				},
 			},
 		},
+		Right: &tree.TreeNode{
+			Val: 0,
+		},
 	}
-	algo.GetPathList(tree, make([]int, 0))
+	tree.GetPathList(root, make([]int, 0))
+	tree.List()
+}
+
+func TestAppendAddress(t *testing.T) {
+	arr1 := make([]int, 2)
+	arr1 = append(arr1, 1)
+	utils.ShowMemoryAddress(arr1)
+	arr1 = append(arr1, 2)
+	utils.ShowMemoryAddress(arr1)
+	arr1 = append(arr1, 4)
+	utils.ShowMemoryAddress(arr1)
 }
