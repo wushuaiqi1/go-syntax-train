@@ -5,19 +5,19 @@ import (
 	"go-syntax-train/utils"
 )
 
-type TreeNode struct {
+type Node struct {
 	Val   int
-	Left  *TreeNode
-	Right *TreeNode
+	Left  *Node
+	Right *Node
 }
 
 // decorateRecord 层序遍历
-func decorateRecord(root *TreeNode) [][]int {
+func decorateRecord(root *Node) [][]int {
 	res := make([][]int, 0)
 	if root == nil {
 		return res
 	}
-	queue := make([]*TreeNode, 0)
+	queue := make([]*Node, 0)
 	queue = append(queue, root)
 	for len(queue) != 0 {
 		// 更新访问长度
@@ -42,7 +42,7 @@ func decorateRecord(root *TreeNode) [][]int {
 	return res
 }
 
-func sumRootToLeaf(root *TreeNode) int {
+func sumRootToLeaf(root *Node) int {
 	GetPathList(root, make([]int, 0))
 	// 求和
 	count := 0
@@ -61,7 +61,7 @@ func List() {
 }
 
 // GetPathList 获取二叉树所有路径
-func GetPathList(root *TreeNode, data []int) {
+func GetPathList(root *Node, data []int) {
 	// 当前元素添加到切片
 	data = append(data, root.Val)
 	// 叶子节点处理

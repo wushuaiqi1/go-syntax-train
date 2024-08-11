@@ -55,21 +55,21 @@ func test1(data []int) {
 }
 
 func TestGetPathList(t *testing.T) {
-	root := &tree.TreeNode{
-		Val: 0,
-		Left: &tree.TreeNode{
-			Val: 0,
-			Right: &tree.TreeNode{
-				Val: 0,
-				Left: &tree.TreeNode{
-					Val: 0,
+	root := &tree.Node{
+		Val: 1,
+		Left: &tree.Node{
+			Val: 2,
+			Right: &tree.Node{
+				Val: 3,
+				Left: &tree.Node{
+					Val: 4,
 				},
-				Right: &tree.TreeNode{
-					Val: 1,
+				Right: &tree.Node{
+					Val: 5,
 				},
 			},
 		},
-		Right: &tree.TreeNode{
+		Right: &tree.Node{
 			Val: 0,
 		},
 	}
