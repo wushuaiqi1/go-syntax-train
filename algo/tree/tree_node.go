@@ -80,3 +80,25 @@ func GetPathList(root *Node, data []int) {
 		GetPathList(root.Right, data)
 	}
 }
+
+// convertBiNode 二叉搜索树转换为单向链表
+func convertBiNode(root *Node) *Node {
+	head := &Node{-1, nil, root}
+	inorderConvert(head, root)
+	return head.Right
+}
+
+func inorderConvert(prev *Node, cur *Node) *Node {
+	if cur == nil {
+		return prev
+	}
+	prev = inorderConvert(prev, cur.Left)
+	// 父亲节点断开左孩子
+	cur.Left = nil
+	// 前驱节点孩子节点指向父亲节点
+	prev.Right = cur
+	// 前驱节点转移到父节点
+	prev = cur
+	prev = inorderConvert(prev, cur.Right)
+	return prev
+}
