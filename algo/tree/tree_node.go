@@ -102,3 +102,100 @@ func inorderConvert(prev *TreeNode, cur *TreeNode) *TreeNode {
 	prev = inorderConvert(prev, cur.Right)
 	return prev
 }
+
+func isBalanced(root *TreeNode) bool {
+	if root == nil {
+		return true
+	}
+	return abs(depth(root.Left), depth(root.Right)) <= 1 && isBalanced(root.Left) && isBalanced(root.Right)
+}
+
+func depth(cur *TreeNode) int {
+	if cur == nil {
+		return 0
+	}
+	return max(depth(cur.Left), depth(cur.Right)) + 1
+}
+
+func max(a, b int) int {
+	if a > b {
+		return a
+	} else {
+		return b
+	}
+}
+
+func abs(a, b int) int {
+	if a > b {
+		return a - b
+	} else {
+		return b - a
+	}
+}
+
+var res []int
+
+func InorderTraversal(root *TreeNode) []int {
+	return inorder(root, make([]int, 0))
+}
+
+// inorder 中序遍历 注意数组返回上层
+func inorder(root *TreeNode, res []int) []int {
+	if root == nil {
+		return res
+	}
+	if root.Left != nil {
+		res = inorder(root.Left, res)
+	}
+	res = append(res, root.Val)
+	if root.Right != nil {
+		res = inorder(root.Right, res)
+	}
+	return res
+}
+
+// isSameTree 相同的树
+func isSameTree(p *TreeNode, q *TreeNode) bool {
+	if p == nil && q == nil {
+		return true
+	}
+	if p == nil || q == nil {
+		return false
+	}
+	if p.Val == q.Val {
+		return isSameTree(p.Left, q.Left) && isSameTree(p.Right, q.Right)
+	} else {
+		return false
+	}
+}
+
+// isSymmetric 对称的树
+func isSymmetric(root *TreeNode) bool {
+	return check(root, root)
+}
+func check(p, q *TreeNode) bool {
+	if p == nil && q == nil {
+		return true
+	}
+	if p != nil && q != nil && p.Val == q.Val {
+		return check(p.Left, q.Right) && check(p.Right, q.Left)
+	} else {
+		return false
+	}
+}
+
+func sortedArrayToBST(nums []int) (res *TreeNode) {
+	return buildTree(nums, 0, len(nums)-1)
+}
+func buildTree(nums []int, left int, right int) *TreeNode {
+	if left > right {
+		return nil
+	}
+	mid := left + (right-left)/2
+	cur := &TreeNode{
+		Val: nums[mid],
+	}
+	cur.Left = buildTree(nums, left, mid-1)
+	cur.Right = buildTree(nums, mid+1, right)
+	return cur
+}
