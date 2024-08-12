@@ -5,19 +5,19 @@ import (
 	"go-syntax-train/utils"
 )
 
-type Node struct {
+type TreeNode struct {
 	Val   int
-	Left  *Node
-	Right *Node
+	Left  *TreeNode
+	Right *TreeNode
 }
 
 // decorateRecord 层序遍历
-func decorateRecord(root *Node) [][]int {
+func decorateRecord(root *TreeNode) [][]int {
 	res := make([][]int, 0)
 	if root == nil {
 		return res
 	}
-	queue := make([]*Node, 0)
+	queue := make([]*TreeNode, 0)
 	queue = append(queue, root)
 	for len(queue) != 0 {
 		// 更新访问长度
@@ -42,7 +42,7 @@ func decorateRecord(root *Node) [][]int {
 	return res
 }
 
-func sumRootToLeaf(root *Node) int {
+func sumRootToLeaf(root *TreeNode) int {
 	GetPathList(root, make([]int, 0))
 	// 求和
 	count := 0
@@ -61,7 +61,7 @@ func List() {
 }
 
 // GetPathList 获取二叉树所有路径
-func GetPathList(root *Node, data []int) {
+func GetPathList(root *TreeNode, data []int) {
 	// 当前元素添加到切片
 	data = append(data, root.Val)
 	// 叶子节点处理
@@ -82,13 +82,13 @@ func GetPathList(root *Node, data []int) {
 }
 
 // convertBiNode 二叉搜索树转换为单向链表
-func convertBiNode(root *Node) *Node {
-	head := &Node{-1, nil, root}
+func convertBiNode(root *TreeNode) *TreeNode {
+	head := &TreeNode{-1, nil, root}
 	inorderConvert(head, root)
 	return head.Right
 }
 
-func inorderConvert(prev *Node, cur *Node) *Node {
+func inorderConvert(prev *TreeNode, cur *TreeNode) *TreeNode {
 	if cur == nil {
 		return prev
 	}
