@@ -11,3 +11,6 @@ Go基础语法训练，base golang language dev 1.20 version
 # GRPC
 - 使用IDL生成代码的RPC框架，适合多语言通信场景～
 - 小型系统直接使用HTTP接口～
+
+# GORM
+- GO和数据库交互的框架

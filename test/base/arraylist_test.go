@@ -1,4 +1,4 @@
-package test
+package base
 
 import (
 	go_syntax_train "go-syntax-train/base"
