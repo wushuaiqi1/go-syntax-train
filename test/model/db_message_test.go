@@ -3,7 +3,7 @@ package model
 import (
 	"fmt"
 	"github.com/tidwall/gjson"
-	"go-syntax-train/cmd"
+	"go-syntax-train/config"
 	"go-syntax-train/model"
 	"log"
 	"strconv"
@@ -14,7 +14,7 @@ import (
 
 // 模型映射表
 func TestAutoMigrate(t *testing.T) {
-	db := cmd.ConnectTest()
+	db := config.ConnectTest()
 	err := db.AutoMigrate(&model.Message{})
 	if err != nil {
 		return
@@ -23,7 +23,7 @@ func TestAutoMigrate(t *testing.T) {
 
 func TestBatchCreate(t *testing.T) {
 	start := time.Now().UnixMilli()
-	db := cmd.ConnectTest()
+	db := config.ConnectTest()
 	res := sync.WaitGroup{}
 	for i := 1; i <= 151; i++ {
 		res.Add(1)

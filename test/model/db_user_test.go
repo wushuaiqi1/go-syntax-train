@@ -2,7 +2,7 @@ package model
 
 import (
 	"fmt"
-	"go-syntax-train/cmd"
+	"go-syntax-train/config"
 	"testing"
 )
 
@@ -22,7 +22,7 @@ func (User) TableName() string {
 }
 
 func TestCreate(t *testing.T) {
-	db := cmd.ConnectTest()
+	db := config.ConnectTest()
 	db.Create(&User{
 		Name:    "武帅祺",
 		Age:     20,
@@ -31,7 +31,7 @@ func TestCreate(t *testing.T) {
 }
 
 func TestAscFirst(t *testing.T) {
-	db := cmd.ConnectTest()
+	db := config.ConnectTest()
 	u1 := User{}
 	db.First(&u1)
 	fmt.Println(u1)
@@ -41,7 +41,7 @@ func TestAscFirst(t *testing.T) {
 }
 
 func TestFind(t *testing.T) {
-	db := cmd.ConnectTest()
+	db := config.ConnectTest()
 	users := make([]User, 0)
 	db.Limit(1).Find(&users)
 	fmt.Println(users)

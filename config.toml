@@ -1,0 +1,17 @@
+[server]
+port=8003
+
+[db]
+host="127.0.0.1"
+port=9003
+username='root'
+password='123456'
+
+[redis]
+host="127.0.0.1"
+port=26379
+name='redis'
+
+[yach]
+appid='358471'
+appkey='hsjskfanks'
