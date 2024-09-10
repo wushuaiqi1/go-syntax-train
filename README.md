@@ -14,3 +14,8 @@ Go基础语法训练，base golang language dev 1.20 version
 
 # GORM
 - GO和数据库交互的框架
+
+# 启动项目
+```shell
+go run cmd/main.go -config configs/config.toml
+```

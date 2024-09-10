@@ -1,5 +1,6 @@
 [server]
 port=8003
+name="syntax-train"
 
 [db]
 host="127.0.0.1"
@@ -15,3 +16,8 @@ name='redis'
 [yach]
 appid='358471'
 appkey='hsjskfanks'
+
+[trace]
+disabled=true # 开启trace支持
+sampler.type="const"
+sampler.param=1 # 数据全量采集

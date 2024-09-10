@@ -1,10 +1,11 @@
-package config
+package configs
 
 import (
 	"flag"
 	"fmt"
 	"github.com/fsnotify/fsnotify"
 	"github.com/spf13/viper"
+	"os"
 	"time"
 )
 
@@ -16,7 +17,7 @@ func init() {
 }
 
 func loadConfigByDefaultPath() {
-	viper.SetConfigName("config")
+	viper.SetConfigName("configs")
 	viper.AddConfigPath("/Users/tal/GolandProjects/go-syntax-train/")
 	viper.SetConfigType("toml")
 	err := viper.ReadInConfig()
@@ -35,7 +36,11 @@ func loadConfigByDefaultPath() {
 
 func loadConfigByCommandLineParams() {
 	if len(path) == 0 {
-		panic("missing path")
+		currentWorkDir, err := os.Getwd()
+		if err != nil {
+			panic(err)
+		}
+		path = currentWorkDir + "/configs/config.toml"
 	}
 	viper.SetConfigFile(path)
 	err := viper.ReadInConfig()
@@ -46,7 +51,7 @@ func loadConfigByCommandLineParams() {
 	fmt.Println("viper读取配置文件成功，端口号是", port)
 }
 
-func LoadConfig() {
+func LoadTomlConfig() {
 	// 加载配置
 	loadConfigByCommandLineParams()
 }
