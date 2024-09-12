@@ -19,12 +19,12 @@ func LoadJaegerConfig() {
 		Tags:        tags,
 		ServiceName: viper.GetString("server.name"), // 你的服务名称
 		Sampler: &config.SamplerConfig{
-			Type:  viper.GetString("trace.sampler.type"),   // 采样类型，这里使用固定采样
-			Param: viper.GetFloat64("trace.sampler.param"), // 采样比例，1表示采样所有请求
+			Type:  viper.GetString("tracing.sampler.type"),   // 采样类型，这里使用固定采样
+			Param: viper.GetFloat64("tracing.sampler.param"), // 采样比例，1表示采样所有请求
 		},
 		Reporter: &config.ReporterConfig{
 			LogSpans:          true,                                // 日志记录 Span 信息
-			CollectorEndpoint: "http://localhost:14268/api/traces", // Jaeger HTTP 接口的地址
+			CollectorEndpoint: viper.GetString("tracing.endpoint"), // Jaeger HTTP 接口的地址
 		},
 	}
 
@@ -36,13 +36,5 @@ func LoadJaegerConfig() {
 
 	// 将 tracer 设置为全局 tracer
 	opentracing.SetGlobalTracer(tracer)
-}
-
-// TraceMark 数据埋点
-func TraceMark(spanName string, options map[any]any) {
-	curSpan := opentracing.StartSpan(spanName)
-	defer curSpan.Finish()
-	for key, value := range options {
-		curSpan.LogKV(key, value)
-	}
+	log.Println("load jaeger config success...")
 }

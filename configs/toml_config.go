@@ -5,6 +5,7 @@ import (
 	"fmt"
 	"github.com/fsnotify/fsnotify"
 	"github.com/spf13/viper"
+	"log"
 	"os"
 	"time"
 )
@@ -47,8 +48,8 @@ func loadConfigByCommandLineParams() {
 	if err != nil {
 		panic(err)
 	}
-	port := viper.GetString("server.port")
-	fmt.Println("viper读取配置文件成功，端口号是", port)
+	port := viper.GetString("server.name")
+	log.Println("load viper config success,the server name is", port)
 }
 
 func LoadTomlConfig() {

@@ -4,7 +4,9 @@ import (
 	"flag"
 	"fmt"
 	"go-syntax-train/configs"
+	"go-syntax-train/configs/routers"
 	"log"
+	"net/http"
 	"os"
 	"os/signal"
 	"syscall"
@@ -15,9 +17,12 @@ func main() {
 	flag.Parse()
 	configs.LoadTomlConfig()
 	configs.LoadJaegerConfig()
-	configs.TraceMark("服务启动成功", map[any]any{
-		"我是key": "我在测试",
-	})
+	configs.LoadSentryConfig()
+	routers.Init()
+	err := http.ListenAndServe("localhost:8080", nil)
+	if err != nil {
+		return
+	}
 	ProgramExitAction()
 }
 

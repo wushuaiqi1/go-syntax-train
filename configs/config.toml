@@ -17,7 +17,13 @@ name='redis'
 appid='358471'
 appkey='hsjskfanks'
 
-[trace]
+[tracing]
+endpoint = "http://localhost:14268/api/traces"
 disabled=true # 开启trace支持
 sampler.type="const"
 sampler.param=1 # 数据全量采集
+
+[sentry]
+dsn = "https://ab906ff272a6ff85fdbaff045fbae402@o4507933316874240.ingest.us.sentry.io/4507933332930560"
+env = "prod"
+debug = false
